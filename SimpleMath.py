@@ -32,10 +32,12 @@ class SimpleMath:
     @classmethod
     def INPUT_TYPES(s):
         return {
+            "optional": {
+                "a": ("FLOAT", { "default": 0.0, "step": 1 }),
+                "b": ("FLOAT", { "default": 0.0, "step": 1 }),
+            },
             "required": {
-                "a": ("FLOAT", { "default": 0, "min": -0xffffffffffffffff, "max": 0xffffffffffffffff, "step": 1 }),
-                "b": ("FLOAT", { "default": 0, "min": -0xffffffffffffffff, "max": 0xffffffffffffffff, "step": 1 }),
-                "operation": ("STRING", { "multiline": False, "default": "" }),
+                "value": ("STRING", { "multiline": False, "default": "" }),
             },
         }
 
@@ -45,12 +47,12 @@ class SimpleMath:
 
     CATEGORY = "utils"
 
-    def do_math(self, a, b, operation):
+    def do_math(self, value, a = 0.0, b = 0.0):
         # TODO: check if it can be done with a one-liner
-        operation = re.sub(r'\b[aA]\b', str(a), operation)
-        operation = re.sub(r'\b[bB]\b', str(b), operation)
+        value = re.sub(r'\b[aA]\b', str(a), value)
+        value = re.sub(r'\b[bB]\b', str(b), value)
 
-        result = eval_(ast.parse(operation, mode='eval').body)
+        result = eval_(ast.parse(value, mode='eval').body)
 
         if math.isnan(result):
             result = 0.0
