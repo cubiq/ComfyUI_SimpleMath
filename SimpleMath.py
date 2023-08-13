@@ -12,7 +12,7 @@ operators = {
     ast.Pow: op.pow,        # TODO: this requires more parsing to avoid float pow'ing
     #ast.BitXor: op.xor,
     #ast.USub: op.neg,
-    #ast.Mod: op.mod
+    ast.Mod: op.mod,
 }
 
 def eval_(node):
