@@ -9,21 +9,11 @@ operators = {
     ast.Mult: op.mul,
     ast.Div: op.truediv,
     ast.FloorDiv: op.floordiv,
-    ast.Pow: op.pow,        # TODO: this requires more parsing to avoid float pow'ing
+    ast.Pow: op.pow,
     #ast.BitXor: op.xor,
     #ast.USub: op.neg,
     ast.Mod: op.mod,
 }
-
-def eval_(node):
-    if isinstance(node, ast.Num): # <number>
-        return node.n
-    elif isinstance(node, ast.BinOp): # <left> <operator> <right>
-        return operators[type(node.op)](eval_(node.left), eval_(node.right))
-    elif isinstance(node, ast.UnaryOp): # <operator> <operand> e.g., -1
-        return operators[type(node.op)](eval_(node.operand))
-    else:
-        return 0
 
 class SimpleMath:
     def __init__(self):
@@ -48,9 +38,20 @@ class SimpleMath:
     CATEGORY = "utils"
 
     def do_math(self, value, a = 0.0, b = 0.0):
-        # TODO: check if it can be done with a one-liner
-        value = re.sub(r'\b[aA]\b', str(a), value)
-        value = re.sub(r'\b[bB]\b', str(b), value)
+        def eval_(node):
+            if isinstance(node, ast.Num): # number
+                return node.n
+            elif isinstance(node, ast.Name): # variable
+                if node.id == "a":
+                    return a
+                if node.id == "b":
+                    return b
+            elif isinstance(node, ast.BinOp): # <left> <operator> <right>
+                return operators[type(node.op)](eval_(node.left), eval_(node.right))
+            elif isinstance(node, ast.UnaryOp): # <operator> <operand> e.g., -1
+                return operators[type(node.op)](eval_(node.operand))
+            else:
+                return 0
 
         result = eval_(ast.parse(value, mode='eval').body)
 
