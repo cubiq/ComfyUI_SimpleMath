@@ -60,10 +60,47 @@ class SimpleMath:
 
         return (round(result), result, )
 
+# taken from https://github.com/pythongosssss/ComfyUI-Custom-Scripts
+class AnyType(str):
+    def __ne__(self, __value: object) -> bool:
+        return False
+
+any = AnyType("*")
+
+class SimpleMathDebug:
+    def __init__(self):
+        pass
+
+    @classmethod
+    def INPUT_TYPES(s):
+        return {
+            "required": {
+                "value": (any, {}),
+            },
+            "optional": {
+                "prefix": ("STRING", { "multiline": False, "default": "Value:" })
+            }
+        }
+
+    RETURN_TYPES = ()
+
+    FUNCTION = "debug_print"
+
+    CATEGORY = "utils"
+
+    OUTPUT_NODE = True
+
+    def debug_print(self, value, prefix):
+        print(f"\033[96m{prefix} {value}\033[0m")
+
+        return (None,)
+
 NODE_CLASS_MAPPINGS = {
-    "SimpleMath": SimpleMath
+    "SimpleMath": SimpleMath,
+    "SimpleMathDebug": SimpleMathDebug
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "SimpleMath": "Math op"
+    "SimpleMath": "Math op",
+    "SimpleMathDebug": "Math debug"
 }
