@@ -1,6 +1,5 @@
 import ast
 import math
-import re
 import operator as op
 
 operators = {
