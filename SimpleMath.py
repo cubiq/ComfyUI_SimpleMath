@@ -22,8 +22,8 @@ class SimpleMath:
     def INPUT_TYPES(s):
         return {
             "optional": {
-                "a": ("FLOAT", { "default": 0.0, "step": 1 }),
-                "b": ("FLOAT", { "default": 0.0, "step": 1 }),
+                "a": ("INT,FLOAT", { "default": 0.0, "step": 0.1 }),
+                "b": ("INT,FLOAT", { "default": 0.0, "step": 0.1 }),
             },
             "required": {
                 "value": ("STRING", { "multiline": False, "default": "" }),
@@ -31,9 +31,7 @@ class SimpleMath:
         }
 
     RETURN_TYPES = ("INT", "FLOAT", )
-
     FUNCTION = "do_math"
-
     CATEGORY = "utils"
 
     def do_math(self, value, a = 0.0, b = 0.0):
